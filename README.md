@@ -101,13 +101,17 @@ route inconnue qui répond 404, et le corps JSON malformé qui répond 400 et
 non 500. Ce dernier verrouille le fait que le middleware d'erreur respecte
 `err.status` au lieu de forcer 500.
 
-Côté client : le parcours de création, l'échec de chargement suivi d'une
-nouvelle tentative, et l'échec de création, où le champ conserve la saisie
-et le message disparaît dès la frappe suivante. Celui-ci est la régression
+Côté client : le parcours de création, la liste vide, l'échec de chargement
+suivi d'une nouvelle tentative, et l'échec de création, où le champ conserve
+la saisie et le message disparaît dès la frappe suivante. Celui-ci est la régression
 du seul bug que j'ai trouvé en testant à la main.
 
 Le test du parcours vérifie aussi que la liste n'est demandée qu'une seule
 fois : le cache est mis à jour avec le ticket renvoyé, sans seconde requête.
+
+Le test de la liste vide vérifie en plus qu'elle ne s'affiche pas tant que
+le chargement n'est pas terminé : il verrouille l'ordre des branches, et
+échoue si on les intervertit.
 
 Un test end-to-end avec Cypress serait la suite logique : il vérifierait
 l'intégration réelle entre le client et le serveur, ce que les tests client,
@@ -125,9 +129,9 @@ L'énoncé place la qualité du noyau avant le nombre de fonctionnalités, et c'
 
 ### Améliorations techniques envisagées
 
-**Les deux derniers états d'interface sans test** : le chargement, qui
-demande une promesse laissée en attente, et la liste vide. Les trois autres
-sont couverts.
+**L'état « création en cours » reste sans test** : l'observer demande une
+mutation laissée volontairement en attente. Les quatre autres états sont
+couverts.
 
 **Un tri de la liste par date décroissante.** L'énoncé ne le demande pas, mais
 au-delà de quelques tickets, un nouvel élément ajouté en fin de liste devient
