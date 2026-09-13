@@ -12,3 +12,40 @@ body {
 h1 {
   font-size: 1.5rem;
 }
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+input,
+button {
+  font: inherit;
+  padding: 0.5rem;
+}
+
+button {
+  align-self: flex-start;
+}
+
+.error {
+  color: #b3261e;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  border-top: 1px solid #ddd;
+  padding: 0.75rem 0;
+}
+
+.ticket-meta {
+  display: block;
+  font-size: 0.875rem;
+  color: #555;
+}
