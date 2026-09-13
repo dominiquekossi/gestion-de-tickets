@@ -164,7 +164,8 @@ Ensuite : implémentation dans le dépôt à partir de décisions déjà arrêt�
   d'une transition d'état par un appel explicite, pour supprimer une
   dépendance à l'ordre des rendus de React.
 - J'ai refusé `strictPort` côté client : si le port est occupé, Vite doit en
-  choisir un autre plutôt que d'échouer chez celui qui clone le dépôt.- J'ai vérifié le contrat d'API cas par cas avec curl : codes de retour,
+  choisir un autre plutôt que d'échouer chez celui qui clone le dépôt.
+- J'ai vérifié le contrat d'API cas par cas avec curl : codes de retour,
   forme des réponses et messages d'erreur, y compris le corps JSON malformé
   qui répond 400 et non 500.
 - J'ai vérifié qu'un clone neuf s'installe et démarre avec les seules
