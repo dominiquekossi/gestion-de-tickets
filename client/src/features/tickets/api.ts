@@ -1,6 +1,6 @@
 import type { Ticket } from './types'
 
-// Relative on purpose: the Vite dev server proxies /api to the Express server.
+// URL relative volontairement : le serveur de développement Vite relaie /api vers Express.
 const API_URL = '/api/tickets'
 
 function userMessageFrom(body: unknown): string | null {
@@ -10,8 +10,8 @@ function userMessageFrom(body: unknown): string | null {
   return null
 }
 
-// `genericMessage` is the fallback shown whenever the server has no message meant
-// for the user: a 5xx, an unreadable body, or a fetch that never got a response.
+// `genericMessage` est le repli affiché dès que le serveur n'a pas de message destiné
+// à l'utilisateur : 5xx, corps illisible, ou requête restée sans réponse.
 async function request<T>(init: RequestInit | undefined, genericMessage: string): Promise<T> {
   let response: Response
 

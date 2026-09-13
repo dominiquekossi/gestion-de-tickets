@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-// The unified `error` covers an absent body and a missing or non-string title;
-// the checks below carry their own message and take precedence over it.
+// Le paramètre `error` couvre un corps absent et un titre manquant ou non textuel ;
+// les contrôles ci-dessous portent leur propre message et l'emportent sur lui.
 export const createTicketSchema = z.object(
   {
     title: z

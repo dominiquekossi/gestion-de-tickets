@@ -11,8 +11,8 @@ export function TicketForm({ onSubmit, isCreating, createError }: TicketFormProp
   const [title, setTitle] = useState('')
   const wasCreating = useRef(false)
 
-  // onSubmit returns nothing, so a success is read from the transition out of
-  // isCreating without error: the field is cleared then, and only then.
+  // onSubmit ne renvoie rien : le succès se déduit de la sortie de isCreating
+  // sans erreur. Le champ n'est vidé qu'à ce moment-là, jamais avant.
   useEffect(() => {
     if (wasCreating.current && !isCreating && !createError) {
       setTitle('')
@@ -20,7 +20,7 @@ export function TicketForm({ onSubmit, isCreating, createError }: TicketFormProp
     wasCreating.current = isCreating
   }, [isCreating, createError])
 
-  // Ergonomics only: the server validates the title on its own.
+  // Simple confort de saisie : la validation qui fait autorité est celle du serveur.
   const canSubmit = title.trim() !== '' && !isCreating
 
   function handleSubmit(event: FormEvent) {

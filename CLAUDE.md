@@ -42,10 +42,13 @@ cadre à l'assistant : les décisions viennent du développeur, l'assistant les 
   message en français destiné à l'utilisateur.
 - `Ticket` : `id` (uuid), `title`, `status` (`open` | `closed`),
   `createdAt` (ISO 8601). Les trois derniers sont générés par le serveur.
+
 ## Conventions
 
-- Code, identifiants, commentaires et messages de commit **en anglais**.
+- Code et identifiants **en anglais**.
+- Commentaires **en français** : ils s'adressent à l'équipe, pas au compilateur.
 - Textes visibles par l'utilisateur **en français**.
+- Messages de commit **en anglais**, selon la convention Conventional Commits.
 - Commits conventionnels. Aucun attribut d'IA dans les messages de commit.
 - Commentaires uniquement là où le code ne peut pas se suffire. Pas de bannières
   de section, pas de JSDoc sur des fonctions évidentes.

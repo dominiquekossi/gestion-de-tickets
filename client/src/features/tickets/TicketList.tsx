@@ -1,6 +1,6 @@
 import type { Ticket, TicketStatus } from './types'
 
-// Display only: the data keeps 'open' and 'closed'.
+// Traduction d'affichage seulement : les données conservent 'open' et 'closed'.
 const statusLabels: Record<TicketStatus, string> = {
   open: 'Ouvert',
   closed: 'Fermé',

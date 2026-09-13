@@ -4,8 +4,8 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
 
-// No retry: with retries on, the error state would only appear after several
-// seconds, which makes it hard to demonstrate.
+// Sans réessai : avec les tentatives par défaut, l'état d'erreur n'apparaîtrait
+// qu'après plusieurs secondes, ce qui le rend difficile à démontrer.
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: false } },
 })

@@ -24,9 +24,9 @@ export function createApp(): Express {
     res.status(404).json({ error: 'Ressource introuvable.' });
   });
 
-  // express.json() rejects a malformed body with status 400: reporting that as a
-  // server error would be wrong. The message stays generic, err.message is not
-  // written for the end user.
+  // express.json() rejette un corps malformé avec le statut 400 : l'annoncer comme
+  // une erreur serveur serait faux. Le message reste générique, err.message n'est
+  // jamais montré à l'utilisateur.
   const handleError: ErrorRequestHandler = (err, _req, res, _next) => {
     const status = statusOf(err);
     const message =

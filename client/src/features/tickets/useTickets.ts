@@ -12,8 +12,8 @@ export function useTickets() {
   const mutation = useMutation({
     mutationFn: createTicket,
     onSuccess: (created) => {
-      // The POST already returns the ticket built by the server, so no refetch.
-      // The cache is still undefined if the mutation resolves before the first query.
+      // Le POST renvoie déjà le ticket construit par le serveur : un second GET serait inutile.
+      // Le cache est encore undefined si la mutation aboutit avant la requête initiale.
       queryClient.setQueryData<Ticket[]>(ticketsKey, (old) => (old ? [...old, created] : [created]))
     },
   })

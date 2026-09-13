@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 5173,
-    // Proxying /api keeps the browser on a single origin, so the server needs no CORS configuration.
+    // Relayer /api garde le navigateur sur une seule origine : le serveur n'a donc aucun CORS à configurer.
     proxy: {
       '/api': 'http://localhost:3000',
     },
