@@ -24,7 +24,8 @@ export function useTickets() {
     tickets: query.data ?? [],
     isCreating: mutation.isPending,
     createError: mutation.error?.message ?? null,
-    createTicket: (title: string) => mutation.mutate(title),
+    createTicket: (title: string, onSuccess?: () => void) => mutation.mutate(title, { onSuccess }),
+    clearCreateError: () => mutation.reset(),
     reload: () => {
       void query.refetch()
     },

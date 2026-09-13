@@ -3,7 +3,8 @@ import { TicketList } from './features/tickets/TicketList'
 import { useTickets } from './features/tickets/useTickets'
 
 function App() {
-  const { isLoading, error, tickets, isCreating, createError, createTicket, reload } = useTickets()
+  const { isLoading, error, tickets, isCreating, createError, createTicket, clearCreateError, reload } =
+    useTickets()
 
   function renderTickets() {
     if (isLoading) {
@@ -31,7 +32,12 @@ function App() {
   return (
     <main>
       <h1>Gestion de tickets</h1>
-      <TicketForm onSubmit={createTicket} isCreating={isCreating} createError={createError} />
+      <TicketForm
+        onSubmit={createTicket}
+        isCreating={isCreating}
+        createError={createError}
+        clearCreateError={clearCreateError}
+      />
       {renderTickets()}
     </main>
   )

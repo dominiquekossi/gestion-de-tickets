@@ -1,24 +1,15 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import type { FormEvent } from 'react'
 
 type TicketFormProps = {
-  onSubmit: (title: string) => void
+  onSubmit: (title: string, onSuccess: () => void) => void
   isCreating: boolean
   createError: string | null
+  clearCreateError: () => void
 }
 
-export function TicketForm({ onSubmit, isCreating, createError }: TicketFormProps) {
+export function TicketForm({ onSubmit, isCreating, createError, clearCreateError }: TicketFormProps) {
   const [title, setTitle] = useState('')
-  const wasCreating = useRef(false)
-
-  // onSubmit ne renvoie rien : le succès se déduit de la sortie de isCreating
-  // sans erreur. Le champ n'est vidé qu'à ce moment-là, jamais avant.
-  useEffect(() => {
-    if (wasCreating.current && !isCreating && !createError) {
-      setTitle('')
-    }
-    wasCreating.current = isCreating
-  }, [isCreating, createError])
 
   // Simple confort de saisie : la validation qui fait autorité est celle du serveur.
   const canSubmit = title.trim() !== '' && !isCreating
@@ -26,7 +17,7 @@ export function TicketForm({ onSubmit, isCreating, createError }: TicketFormProp
   function handleSubmit(event: FormEvent) {
     event.preventDefault()
     if (!canSubmit) return
-    onSubmit(title.trim())
+    onSubmit(title.trim(), () => setTitle(''))
   }
 
   return (
@@ -35,7 +26,11 @@ export function TicketForm({ onSubmit, isCreating, createError }: TicketFormProp
       <input
         id="ticket-title"
         value={title}
-        onChange={(event) => setTitle(event.target.value)}
+        onChange={(event) => {
+          setTitle(event.target.value)
+          // L'erreur porte sur le titre refusé : elle n'a plus lieu d'être dès qu'il change.
+          if (createError) clearCreateError()
+        }}
       />
       <button type="submit" disabled={!canSubmit}>
         {isCreating ? 'Création…' : 'Créer le ticket'}
