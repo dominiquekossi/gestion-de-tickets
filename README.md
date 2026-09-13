@@ -94,9 +94,24 @@ En cas d'échec, le champ conserve sa saisie, et le message disparaît dès que 
 
 ## Tests
 
-Les tests automatisés font partie des éléments facultatifs de l'énoncé. Deux niveaux : des tests d'API sur la validation et les codes HTTP, et un test client sur le parcours de création. Ce dernier vérifie aussi que la liste n'est demandée qu'une seule fois, puisque le cache est mis à jour sans seconde requête.
+Les tests automatisés font partie des éléments facultatifs de l'énoncé.
 
-Un test end-to-end avec Cypress serait la suite logique : il vérifierait l'intégration réelle entre le client et le serveur, ce que le test client, avec son API simulée, ne couvre pas.
+Côté serveur : le contrat de création (titre absent, vide, trop long), la
+route inconnue qui répond 404, et le corps JSON malformé qui répond 400 et
+non 500. Ce dernier verrouille le fait que le middleware d'erreur respecte
+`err.status` au lieu de forcer 500.
+
+Côté client : le parcours de création, l'échec de chargement suivi d'une
+nouvelle tentative, et l'échec de création, où le champ conserve la saisie
+et le message disparaît dès la frappe suivante. Celui-ci est la régression
+du seul bug que j'ai trouvé en testant à la main.
+
+Le test du parcours vérifie aussi que la liste n'est demandée qu'une seule
+fois : le cache est mis à jour avec le ticket renvoyé, sans seconde requête.
+
+Un test end-to-end avec Cypress serait la suite logique : il vérifierait
+l'intégration réelle entre le client et le serveur, ce que les tests client,
+avec leur API simulée, ne couvrent pas.
 
 ## Ce qui n'est pas fait
 
@@ -110,9 +125,9 @@ L'énoncé place la qualité du noyau avant le nombre de fonctionnalités, et c'
 
 ### Améliorations techniques envisagées
 
-**Un test par état de l'interface**, en commençant par une régression sur le
-message d'erreur qui doit disparaître dès que l'utilisateur modifie le titre.
-C'est le bug que j'ai trouvé en testant à la main, et il mérite un filet.
+**Les deux derniers états d'interface sans test** : le chargement, qui
+demande une promesse laissée en attente, et la liste vide. Les trois autres
+sont couverts.
 
 **Un tri de la liste par date décroissante.** L'énoncé ne le demande pas, mais
 au-delà de quelques tickets, un nouvel élément ajouté en fin de liste devient
@@ -168,6 +183,5 @@ Avant d'écrire la moindre ligne de code, j'ai arrêté les décisions d'archite
 
 ## Temps passé
 
-Environ 3 heures pour l'implémentation, plus le temps consacré en amont aux
-décisions d'architecture et, en cours de route, à la vérification manuelle
-et à la revue.
+Un peu plus de 3 heures pour l'implémentation et les tests, plus le temps consacré
+en amont aux décisions d'architecture et, en cours de route, à la vérification manuelle et à la revue.
