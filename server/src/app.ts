@@ -4,6 +4,7 @@ import express, {
   type Request,
   type Response,
 } from 'express';
+import { ticketsRouter } from './features/tickets/routes.js';
 
 function statusOf(err: unknown): number {
   if (typeof err === 'object' && err !== null && 'status' in err && typeof err.status === 'number') {
@@ -17,7 +18,7 @@ export function createApp(): Express {
 
   app.use(express.json());
 
-  // Feature routes are mounted here.
+  app.use('/api/tickets', ticketsRouter);
 
   app.use((_req: Request, res: Response) => {
     res.status(404).json({ error: 'Ressource introuvable.' });
