@@ -3,8 +3,17 @@ import { TicketList } from './features/tickets/TicketList'
 import { useTickets } from './features/tickets/useTickets'
 
 function App() {
-  const { isLoading, error, tickets, isCreating, createError, createTicket, clearCreateError, reload } =
-    useTickets()
+  const {
+    isLoading,
+    error,
+    isReloading,
+    tickets,
+    isCreating,
+    createError,
+    createTicket,
+    clearCreateError,
+    reload,
+  } = useTickets()
 
   function renderTickets() {
     if (isLoading) {
@@ -14,9 +23,11 @@ function App() {
     if (error) {
       return (
         <>
-          <p className="error">{error}</p>
-          <button type="button" onClick={reload}>
-            Réessayer
+          <p className="error" role="alert">
+            {error}
+          </p>
+          <button type="button" onClick={reload} disabled={isReloading}>
+            {isReloading ? 'Nouvelle tentative…' : 'Réessayer'}
           </button>
         </>
       )

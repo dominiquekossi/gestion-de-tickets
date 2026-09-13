@@ -35,7 +35,11 @@ export function TicketForm({ onSubmit, isCreating, createError, clearCreateError
       <button type="submit" disabled={!canSubmit}>
         {isCreating ? 'Création…' : 'Créer le ticket'}
       </button>
-      {createError && <p className="error">{createError}</p>}
+      {createError && (
+        <p className="error" role="alert">
+          {createError}
+        </p>
+      )}
     </form>
   )
 }
