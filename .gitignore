@@ -1,0 +1,18 @@
+node_modules/
+dist/
+.vite/
+
+# Variables d'environnement
+.env
+.env.*
+!.env.example
+
+# Dossiers d'éditeur et fichiers système
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Recruiter-provided statement, not part of the deliverable.
+exercice-technique-gestion-tickets.pdf
