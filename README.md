@@ -188,5 +188,4 @@ Avant d'écrire la moindre ligne de code, j'ai arrêté les décisions d'archite
 
 ## Temps passé
 
-Un peu plus de 3 heures pour l'implémentation et les tests, plus le temps consacré
-en amont aux décisions d'architecture et, en cours de route, à la vérification manuelle et à la revue.
+Environ 3 heures pour l'implémentation et les tests, plus le temps consacré en amont aux décisions d'architecture et, en cours de route, à la vérification manuelle et à la revue.
