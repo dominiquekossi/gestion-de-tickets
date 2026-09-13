@@ -112,13 +112,12 @@ L'énoncé place la qualité du noyau avant le nombre de fonctionnalités, et c'
 
 **Outils utilisés :** Claude (conversation) et Claude Code.
 
-**Tâches :** j'ai fixé les contraintes et tranché les décisions techniques.
-L'assistant en a exposé les conséquences et les compromis, et a signalé les
-effets de bord que je n'avais pas anticipés. C'est à partir de ces décisions
-et de ces contraintes qu'il a rédigé le `CLAUDE.md`, qui a encadré toute la
-suite du travail. Ensuite : implémentation dans le dépôt à partir de décisions
-déjà arrêtées, tests compris ; revue des différences à chaque étape ; et
-rédaction d'une partie de ce README.
+**Tâches :** 
+
+j'ai fixé les contraintes et tranché les décisions techniques.
+Chaque dépendance est un choix qui m'appartient : pour Zod, pour TanStack
+Query, et pour la mise à jour du cache , l'assistant a exposé le gain, le coût et les effets de bord de chaque option, et j'ai décidé. C'est à partir de ces décisions et de ces contraintes qu'il a rédigé le `CLAUDE.md`, qui a encadré toute la suite du travail.
+Ensuite : implémentation dans le dépôt à partir de décisions déjà arrêtées, tests compris ; revue des différences à chaque étape ; et rédaction d'une partie de ce README.
 
 **Ce que j'ai personnellement vérifié, modifié ou corrigé :**
 
@@ -152,3 +151,7 @@ des choix ci-dessus.
 Avant d'écrire la moindre ligne de code, j'ai arrêté les décisions d'architecture et je les ai consignées dans un `CLAUDE.md` à la racine. Ce fichier a servi de cadre pendant tout l'exercice : il liste ce qui est décidé et ce qu'il est interdit d'ajouter.
 
 ## Temps passé
+
+Environ 3 heures pour l'implémentation, plus le temps consacré en amont aux
+décisions d'architecture et, en cours de route, à la vérification manuelle
+et à la revue.
