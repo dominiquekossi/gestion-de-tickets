@@ -1,0 +1,14 @@
+:root {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+}
+
+body {
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  max-width: 40rem;
+}
+
+h1 {
+  font-size: 1.5rem;
+}
