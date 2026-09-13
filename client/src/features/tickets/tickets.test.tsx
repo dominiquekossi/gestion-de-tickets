@@ -101,3 +101,29 @@ it('conserve la saisie quand la création échoue, et efface l’erreur à la fr
   expect(screen.queryByText(createError)).not.toBeInTheDocument()
   expect(input).toHaveValue(`${typed} `)
 })
+
+it('affiche l’état vide, et pas avant la fin du chargement', async () => {
+  const loadingMessage = 'Chargement des tickets…'
+  const emptyMessage = 'Aucun ticket pour le moment. Créez le premier ci-dessus.'
+
+  // Promesse laissée en attente : c'est le seul moyen d'observer le rendu
+  // pendant le chargement, avant que la réponse vide n'arrive.
+  let resolveTickets!: (tickets: Ticket[]) => void
+  vi.mocked(fetchTickets).mockReturnValueOnce(
+    new Promise((resolve) => {
+      resolveTickets = resolve
+    }),
+  )
+
+  renderApp()
+
+  expect(screen.getByText(loadingMessage)).toBeInTheDocument()
+  // Une liste encore absente n'est pas une liste vide : App teste le chargement
+  // avant de conclure au vide, et cet ordre est ce que verrouille l'assertion.
+  expect(screen.queryByText(emptyMessage)).not.toBeInTheDocument()
+
+  resolveTickets([])
+
+  expect(await screen.findByText(emptyMessage)).toBeInTheDocument()
+  expect(screen.queryByText(loadingMessage)).not.toBeInTheDocument()
+})
