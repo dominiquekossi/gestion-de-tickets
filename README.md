@@ -22,7 +22,7 @@ npm run dev:client   # interface sur http://localhost:5173
 Si le port 5173 est occupé, Vite en choisit un autre et l'affiche au démarrage.
 
 ```bash
-npm test             # tests d'API
+npm test             # tests serveur et client
 npm run typecheck    # types des deux packages
 ```
 
@@ -66,7 +66,7 @@ Route inconnue : `404`. Erreur inattendue : `500`, via un middleware unique.
 
 **Type `Ticket` dupliqué.** Un package partagé imposerait une étape de build pour quelques lignes. Le contrat ci-dessus est la référence commune aux deux copies.
 
-**Validation Zod côté serveur, vérification simple côté client.** Le client empêche l'envoi d'un titre vide par confort. Le serveur valide parce qu'il ne fait jamais confiance au client.
+**Validation Zod côté serveur, vérification simple côté client.** Le client empêche l'envoi d'un titre vide par confort. Le serveur valide parce qu'il ne fait jamais confiance au client. En revanche, je ne valide pas la réponse du serveur au runtime : c'est un risque distinct de la validation d'entrée, et c'est là que Zod côté client aurait du sens.
 
 **TanStack Query côté client.** Deux appels seulement, mais une mutation qui doit se refléter dans la liste : c'est le seuil à partir duquel gérer l'état serveur à la main devient du travail répété.
 
@@ -83,7 +83,7 @@ Route inconnue : `404`. Erreur inattendue : `500`, via un middleware unique.
 | État | Comment le déclencher |
 |---|---|
 | Chargement | Ralentir le réseau (DevTools, Network, Slow 3G) puis recharger. |
-| Erreur de chargement | Arrêter le serveur, puis recharger. Le bouton « Réessayer » relance la requête. |
+| Erreur de chargement | Arrêter le serveur, puis recharger. Le bouton « Réessayer » relance la requête et reste désactivé pendant la nouvelle tentative. |
 | Liste vide | Vider le tableau initial dans `server/src/features/tickets/store.ts`. |
 | Création en cours | Réseau ralenti, puis soumettre : le bouton se désactive et son libellé change. |
 | Échec de création | Soumettre un titre de plus de 200 caractères, ou soumettre serveur arrêté. |
@@ -108,15 +108,32 @@ L'énoncé place la qualité du noyau avant le nombre de fonctionnalités, et c'
 
 **Pagination.** `limit` et `offset`, avec une réponse enveloppée incluant le total. C'est le point où la forme de la réponse change, donc je ne l'ai pas improvisée.
 
+### Améliorations techniques envisagées
+
+**Un test par état de l'interface**, en commençant par une régression sur le
+message d'erreur qui doit disparaître dès que l'utilisateur modifie le titre.
+C'est le bug que j'ai trouvé en testant à la main, et il mérite un filet.
+
+**Un tri de la liste par date décroissante.** L'énoncé ne le demande pas, mais
+au-delà de quelques tickets, un nouvel élément ajouté en fin de liste devient
+invisible sans défilement. Le tri se ferait à l'affichage, dans `TicketList`,
+sans toucher au cache.
+
+**Une réinitialisation du stockage réservée aux tests**, pour pouvoir affirmer
+le contenu exact de la liste plutôt que sa seule taille minimale. Les tests
+d'API partagent aujourd'hui le même tableau en mémoire.
+
+**Un chemin de production côté serveur** (compilation puis exécution du
+résultat) et un script `lint` à la racine : le linter est configuré côté
+client mais n'est atteint par aucune commande documentée.
+
 ## Utilisation de l'IA
 
 **Outils utilisés :** Claude (conversation) et Claude Code.
 
-**Tâches :** 
-
-j'ai fixé les contraintes et tranché les décisions techniques.
+**Tâches :** j'ai fixé les contraintes et tranché les décisions techniques.
 Chaque dépendance est un choix qui m'appartient : pour Zod, pour TanStack
-Query, et pour la mise à jour du cache , l'assistant a exposé le gain, le coût et les effets de bord de chaque option, et j'ai décidé. C'est à partir de ces décisions et de ces contraintes qu'il a rédigé le `CLAUDE.md`, qui a encadré toute la suite du travail.
+Query, et pour la mise à jour du cache par `setQueryData` plutôt que par invalidation, l'assistant a exposé le gain, le coût et les effets de bord de chaque option, et j'ai décidé. C'est à partir de ces décisions et de ces contraintes qu'il a rédigé le `CLAUDE.md`, qui a encadré toute la suite du travail.
 Ensuite : implémentation dans le dépôt à partir de décisions déjà arrêtées, tests compris ; revue des différences à chaque étape ; et rédaction d'une partie de ce README.
 
 **Ce que j'ai personnellement vérifié, modifié ou corrigé :**
@@ -131,12 +148,11 @@ Ensuite : implémentation dans le dépôt à partir de décisions déjà arrêt�
 - J'ai fait remplacer un `useEffect` qui déduisait le succès d'une création
   d'une transition d'état par un appel explicite, pour supprimer une
   dépendance à l'ordre des rendus de React.
-- J'ai refusé `strictPort` côté client : si le port est occupé,
-  Vite doit  en choisir un autre plutôt que d'échouer 
-- J'ai vérifié le contrat d'API cas par cas avec curl : codes de retour,
+- J'ai refusé `strictPort` côté client : si le port est occupé, Vite doit en
+  choisir un autre plutôt que d'échouer chez celui qui clone le dépôt.- J'ai vérifié le contrat d'API cas par cas avec curl : codes de retour,
   forme des réponses et messages d'erreur, y compris le corps JSON malformé
   qui répond 400 et non 500.
-  - J'ai vérifié qu'un clone neuf s'installe et démarre avec les seules
+- J'ai vérifié qu'un clone neuf s'installe et démarre avec les seules
   instructions du README.
 
 Je suis en mesure d'expliquer l'intégralité du code soumis ainsi que chacun
