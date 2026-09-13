@@ -56,4 +56,32 @@ describe('API des tickets', () => {
     expect(response.status).toBe(400);
     expect(response.body).toEqual({ error: 'Le titre est obligatoire.' });
   });
+
+  it('POST refuse un titre de plus de 200 caractères', async () => {
+    const response = await request(app)
+      .post('/api/tickets')
+      .send({ title: 'a'.repeat(201) });
+
+    expect(response.status).toBe(400);
+    expect(response.body).toEqual({ error: 'Le titre ne doit pas dépasser 200 caractères.' });
+  });
+
+  it('une route inconnue renvoie 404 et un corps { error }', async () => {
+    const response = await request(app).get('/api/inconnu');
+
+    expect(response.status).toBe(404);
+    expect(response.body).toEqual({ error: expect.any(String) });
+  });
+
+  // Verrouille le fait que le middleware d'erreur respecte err.status : express.json()
+  // rejette ce corps avec 400, le signaler en 500 serait faux.
+  it('un corps JSON malformé renvoie 400 et non 500', async () => {
+    const response = await request(app)
+      .post('/api/tickets')
+      .set('Content-Type', 'application/json')
+      .send('{"title":');
+
+    expect(response.status).toBe(400);
+    expect(response.body).toEqual({ error: expect.any(String) });
+  });
 });
