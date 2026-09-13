@@ -23,7 +23,8 @@ export function useTickets() {
     error: query.error?.message ?? null,
     // `isFetching` et non `isPending` : après un échec la requête reste en erreur,
     // donc `isPending` ne repasse jamais à true pendant la nouvelle tentative.
-    isReloading: query.isFetching,
+    // `!isPending` exclut le premier chargement, qui n'est pas une reprise.
+    isReloading: query.isFetching && !query.isPending,
     tickets: query.data ?? [],
     isCreating: mutation.isPending,
     createError: mutation.error?.message ?? null,
