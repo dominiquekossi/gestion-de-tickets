@@ -7,6 +7,7 @@
     "setup": "npm --prefix server install && npm --prefix client install",
     "dev:server": "npm --prefix server run dev",
     "dev:client": "npm --prefix client run dev",
-    "typecheck": "npm --prefix server run typecheck && npm --prefix client run typecheck"
+    "typecheck": "npm --prefix server run typecheck && npm --prefix client run typecheck",
+    "test": "npm --prefix server run test"
   }
 }
